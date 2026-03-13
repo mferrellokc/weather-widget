@@ -2,16 +2,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Weather Widget</title>
-
-<link rel="stylesheet" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/css/style.min.css">
-<script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+<title>Weather Forecast</title>
 
 <style>
 body{
-  margin:0;
-  padding:0;
   font-family: Arial, sans-serif;
+  margin:0;
+  padding:10px;
+  background:#f5f7fa;
+}
+
+#weather{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.day{
+  background:white;
+  border-radius:8px;
+  padding:10px;
+  width:120px;
+  text-align:center;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.temp{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.desc{
+  font-size:12px;
+  color:#666;
 }
 </style>
 
@@ -19,26 +42,41 @@ body{
 
 <body>
 
-<div id="openweathermap-widget-11"></div>
+<h3>8-Day Forecast</h3>
+<div id="weather"></div>
 
-<script type="text/javascript">
-window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
-window.myWidgetParam.push({
-  id: 11,
-  cityid: '4544349',
-  appid: '61c623a56e1b7b800d4fd08824ea315e',
-  units: 'imperial',
-  containerid: 'openweathermap-widget-11',
+<script>
+const apiKey = "61c623a56e1b7b800d4fd08824ea315e";
+
+/* Oklahoma City coordinates (same location as your city ID) */
+const lat = 35.4676;
+const lon = -97.5164;
+
+fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
+.then(res => res.json())
+.then(data => {
+
+  const container = document.getElementById("weather");
+
+  data.daily.slice(0,8).forEach(day => {
+
+    const date = new Date(day.dt * 1000);
+
+    const el = document.createElement("div");
+    el.className = "day";
+
+    el.innerHTML = `
+      <div>${date.toLocaleDateString(undefined,{weekday:'short'})}</div>
+      <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png">
+      <div class="temp">${Math.round(day.temp.max)}°</div>
+      <div class="desc">${day.weather[0].main}</div>
+    `;
+
+    container.appendChild(el);
+
+  });
+
 });
-
-(function() {
-  var script = document.createElement('script');
-  script.async = true;
-  script.charset = "utf-8";
-  script.src = "https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator-2.0.js";
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(script, s);
-})();
 </script>
 
 </body>
