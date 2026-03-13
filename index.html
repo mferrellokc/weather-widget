@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Weather Widget</title>
+
+<link rel="stylesheet" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/css/style.min.css">
+<script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  padding:0;
+  font-family: Arial, sans-serif;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="openweathermap-widget-11"></div>
+
+<script type="text/javascript">
+window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
+window.myWidgetParam.push({
+  id: 11,
+  cityid: '4544349',
+  appid: '61c623a56e1b7b800d4fd08824ea315e',
+  units: 'imperial',
+  containerid: 'openweathermap-widget-11',
+});
+
+(function() {
+  var script = document.createElement('script');
+  script.async = true;
+  script.charset = "utf-8";
+  script.src = "https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator-2.0.js";
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(script, s);
+})();
+</script>
+
+</body>
+</html>
